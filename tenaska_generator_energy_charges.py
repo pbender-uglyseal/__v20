@@ -1,15 +1,28 @@
 """
-Tenaska PowerTools Platform (PTP) - Generator Energy Charge Details Exporter
-============================================================================
+Tenaska PowerTools Platform (PTP) - Energy Detail Exporter
+==========================================================
 
-Pulls the following PJM datasets from the Tenaska PowerTools Platform API
+Pulls the Energy_Detail dataset from the Tenaska PowerTools Platform API
 (https://api.ptp.energy) for a user-specified date range and writes the
-results to an Excel workbook with one sheet per dataset:
+results to an Excel workbook.
 
-    - Generator Energy Charge Details - 5 minute
-    - Generator Hourly Energy Charge Details
+This script previously chased two endpoints — "Generator Energy Charge
+Details - 5 minute" and "Generator Hourly Energy Charge Details" — that
+no longer exist in the API spec (confirmed against the full OpenAPI
+bundle as of 2026-04-30; not present in any market). The closest
+equivalent that *is* exposed to V20's API role is Energy_Detail:
+
+    - 5-minute interval
+    - Per-entity (settlement point) granularity
+    - Includes both MWh quantities (Day-Ahead, Real-Time, Bilateral, Meter
+      Read) and dollar amounts (LMP × MWh for both DA and RT)
+
+If you need the original endpoint names back, they may be available via
+the portal's Export/Schedule tab (UI-only, not API). For the hourly view,
+either use the portal export or aggregate the 5-min data downstream.
 
 API docs: https://tenaska.atlassian.net/wiki/external/YjFjNzRhMmZhMTA5NDY3MGEzOGI2OThkOWU0YzE0MGM
+Per-endpoint reference: tenaska_data/endpoint_docs/Energy_Detail.md
 
 Usage
 -----
@@ -31,7 +44,9 @@ Notes
   one fresh token per run and reuses it.
 - Both /query-columnar and /query are attempted for each dataset; the
   columnar endpoint returns tidier tabular output, while the nested /query
-  endpoint is used as a fallback and flattened into rows.
+  endpoint is used as a fallback and flattened into rows. Energy_Detail
+  in particular returns nested-shape responses with a Coords envelope per
+  settlement point.
 
 Dependencies
 ------------
@@ -72,9 +87,15 @@ MARKET = "PJM"
 # "not found or inaccessible" (status code 2303), run the script with
 # --list-endpoints to see the exact names available under the market and
 # update this dict.
+#
+# As of 2026-04-30, V20's API role exposes 10 endpoints under PJM. The
+# original "Generator Energy Charge Details - 5 minute" / "...Hourly..."
+# names are not present in the API spec for any market — they appear to
+# be portal-only datasets. Energy_Detail is the closest equivalent that
+# is API-accessible and returns the same kind of per-entity 5-min energy
+# quantities plus LMP-derived dollar amounts.
 DATASETS: Dict[str, str] = {
-    "Gen Energy Charge 5min": "Generator Energy Charge Details - 5 minute",
-    "Gen Hourly Energy Charge": "Generator Hourly Energy Charge Details",
+    "Energy_Detail 5min": "Energy_Detail",
 }
 
 # Seconds between requests to stay under the rate limit.
@@ -211,18 +232,56 @@ def query_dataset(
     endpoint_name: str,
     begin: str,
     end: str,
+    prefer_nested: bool = False,
 ) -> pd.DataFrame:
     """
     Fetch a dataset for a date range and return a flat DataFrame.
 
-    Tries /query-columnar first. If that fails, falls back to /query and
-    flattens the nested element/datapoint/value tree.
+    By default, tries /query-columnar first and falls back to /query (nested).
+
+    Set ``prefer_nested=True`` for endpoints whose response includes
+    dimensionality (Coords envelopes per element — e.g. Energy_Detail,
+    Bilateral-Transaction-Details). For those, /query-columnar wraps the
+    nested data into one row per element with stringified dicts in cells,
+    which hits Excel's 32,767-char cell limit and silently truncates.
+    /query (nested) explodes the response into one row per
+    (element, interval, dimensionality-key) combination — the shape you
+    actually want for analysis.
     """
     market_seg = _encode_segment(market)
     ep_seg = _encode_segment(endpoint_name)
     params = {"begin": begin, "end": end}
 
+    nested_path = f"/ptp/{market_seg}/{ep_seg}/query"
     columnar_path = f"/ptp/{market_seg}/{ep_seg}/query-columnar"
+
+    if prefer_nested:
+        resp = client.get(nested_path, params=params)
+        if not resp.ok:
+            detail = resp.text[:500]
+            if resp.status_code in (403, 404) and "not found" in detail.lower():
+                raise RuntimeError(
+                    f"Query failed for '{endpoint_name}': "
+                    f"HTTP {resp.status_code} - {detail}"
+                )
+            print(
+                f"  nested /query returned HTTP {resp.status_code}: {detail}; "
+                f"falling back to /query-columnar",
+                file=sys.stderr,
+            )
+        else:
+            return _nested_response_to_df(resp.json())
+
+        time.sleep(REQUEST_DELAY_SEC)
+        resp = client.get(columnar_path, params=params)
+        if not resp.ok:
+            raise RuntimeError(
+                f"Query failed for '{endpoint_name}': "
+                f"HTTP {resp.status_code} - {resp.text[:500]}"
+            )
+        return _columnar_response_to_df(resp.json())
+
+    # Default order: columnar first, nested fallback.
     resp = client.get(columnar_path, params=params)
     if resp.ok:
         try:
@@ -232,13 +291,11 @@ def query_dataset(
         except Exception as exc:  # noqa: BLE001
             print(f"  columnar parse failed ({exc}); falling back to /query", file=sys.stderr)
     else:
-        # Surface the server's error message so the caller can act on it.
         detail = resp.text[:500]
         print(
             f"  columnar query returned HTTP {resp.status_code}: {detail}",
             file=sys.stderr,
         )
-        # If this was a "not found" error, there's no point falling back.
         if resp.status_code in (403, 404) and "not found" in detail.lower():
             raise RuntimeError(
                 f"Query failed for '{endpoint_name}': "
@@ -247,7 +304,6 @@ def query_dataset(
 
     time.sleep(REQUEST_DELAY_SEC)
 
-    nested_path = f"/ptp/{market_seg}/{ep_seg}/query"
     resp = client.get(nested_path, params=params)
     if not resp.ok:
         raise RuntimeError(
@@ -417,8 +473,9 @@ def _valid_date(s: str) -> str:
 def parse_args(argv: Optional[Iterable[str]] = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description=(
-            "Pull PJM Generator Energy Charge Details (5-minute and hourly) "
-            "from the Tenaska PowerTools Platform API and save to Excel."
+            "Pull PJM Energy_Detail (5-minute, per-entity energy quantities + "
+            "LMP-derived dollar amounts) from the Tenaska PowerTools Platform "
+            "API and save to Excel."
         )
     )
     p.add_argument("--start", required=False, type=_valid_date,
@@ -431,7 +488,7 @@ def parse_args(argv: Optional[Iterable[str]] = None) -> argparse.Namespace:
         default=None,
         help=(
             "Output .xlsx path. Defaults to "
-            "'V20_Generator_Energy_Charges_<start>_to_<end>.xlsx' in the cwd."
+            "'V20_Energy_Detail_<start>_to_<end>.xlsx' in the cwd."
         ),
     )
     p.add_argument(
@@ -446,6 +503,16 @@ def parse_args(argv: Optional[Iterable[str]] = None) -> argparse.Namespace:
             "Print the endpoints available under the given market and exit. "
             "Use this to find the exact endpoint names to paste into the "
             "DATASETS dict at the top of this script."
+        ),
+    )
+    p.add_argument(
+        "--prefer-columnar",
+        action="store_true",
+        help=(
+            "Prefer /query-columnar over /query (nested). Default is "
+            "/query (nested) since Energy_Detail uses dimensionality and "
+            "the columnar response wraps nested data in cells that hit "
+            "Excel's 32,767-char limit."
         ),
     )
     args = p.parse_args(argv)
@@ -467,7 +534,7 @@ def main(argv: Optional[Iterable[str]] = None) -> int:
         return 0
 
     output = args.output or Path(
-        f"V20_Generator_Energy_Charges_{args.start}_to_{args.end}.xlsx"
+        f"V20_Energy_Detail_{args.start}_to_{args.end}.xlsx"
     )
 
     frames: Dict[str, pd.DataFrame] = {}
@@ -480,6 +547,7 @@ def main(argv: Optional[Iterable[str]] = None) -> int:
                 endpoint_name=endpoint_name,
                 begin=args.start,
                 end=args.end,
+                prefer_nested=not args.prefer_columnar,
             )
             print(f"  got {len(df):,} rows, {len(df.columns)} columns.")
             frames[sheet_label] = df
