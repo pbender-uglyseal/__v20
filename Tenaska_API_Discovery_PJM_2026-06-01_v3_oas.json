@@ -1,0 +1,1658 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "PowerTools Platform API",
+    "description": "Welcome to the PowerTools Platform API. This page describes all endpoints and expected parameters that are available.\r\n\r\n- All date times are ISO 8601 and UTC unless otherwise noted.\r\n- Rate limiting is implemented with a sliding window per user.\r\n- Averaging more than 1 call per second over a small time period will result in 429 Too Many Requests responses.\r\n\r\n[Static Documentation](https://tenaska.atlassian.net/wiki/external/YjFjNzRhMmZhMTA5NDY3MGEzOGI2OThkOWU0YzE0MGM)",
+    "contact": {
+      "name": "Customer Support",
+      "email": "customersupport@tnsk.com"
+    },
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.ptp.energy"
+    }
+  ],
+  "paths": {
+    "/authentication/token": {
+      "summary": "token",
+      "description": "Responsible for generating a JWT to use with Bearer authentication.",
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Token",
+        "operationId": "get_jwt",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/authentication"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/ptp/{market}": {
+      "summary": "market",
+      "description": "Returns details about selected market.",
+      "get": {
+        "tags": [
+          "Resource"
+        ],
+        "summary": "Market",
+        "operationId": "get_market",
+        "parameters": [
+          {
+            "name": "market",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "Operations",
+                "PJM"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/market"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ptp/{market}/{endpoint}": {
+      "summary": "endpoint",
+      "description": "Returns details about selected market's endpoint.",
+      "get": {
+        "tags": [
+          "Resource"
+        ],
+        "summary": "Endpoint",
+        "operationId": "get_endpoint",
+        "parameters": [
+          {
+            "name": "market",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "Operations",
+                "PJM"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "endpoint",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/endpoint"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          },
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/ptp/Operations/Outage-Scheduler-Availability/query": {
+      "description": "Outage-Scheduler-Availability",
+      "get": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Outage-Scheduler-Availability",
+        "description": "Queries PTP for Outage-Scheduler-Availability.",
+        "operationId": "get_68130008-aa39-4601-9272-264fb6a034f2",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/Operations/Outage-Summary/query": {
+      "description": "Outage-Summary",
+      "get": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Outage-Summary",
+        "description": "Queries PTP for Outage-Summary.",
+        "operationId": "get_2632bf3e-5e6e-4611-9e39-f1099136000a",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/Operations/Outage-Ticket-Data-PJM/query": {
+      "description": "Outage-Ticket-Data-PJM",
+      "get": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Outage-Ticket-Data-PJM",
+        "description": "Queries PTP for Outage-Ticket-Data-PJM.",
+        "operationId": "get_feb01065-d396-404a-9d9f-b7b4e8a1027d",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/API - PJM Ancillary Awards/query": {
+      "description": "API - PJM Ancillary Awards",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "API - PJM Ancillary Awards",
+        "description": "Queries PTP for API - PJM Ancillary Awards.",
+        "operationId": "get_70586d5b-bd85-45f5-80b6-bf5c9d722461",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/AwardData/query": {
+      "description": "AwardData",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "AwardData",
+        "description": "Queries PTP for AwardData.",
+        "operationId": "get_84de1aae-d965-43ef-916b-1564dcfdbe87",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/AwardData/commit": {
+      "description": "AwardData",
+      "post": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "AwardData",
+        "description": "Submits data to PTP for AwardData.",
+        "operationId": "post_84de1aae-d965-43ef-916b-1564dcfdbe87",
+        "parameters": [
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Allows user to override the PowerTools environment that is supplying the schema and data. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/commit"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/commit"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Bilateral-Transaction-Details/query": {
+      "description": "Bilateral-Transaction-Details",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Bilateral-Transaction-Details",
+        "description": "Queries PTP for Bilateral-Transaction-Details.",
+        "operationId": "get_9c09a8e6-81f4-491b-864d-ef1fecdf66bb",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/DA Reserve MCP/query": {
+      "description": "DA Reserve MCP",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "DA Reserve MCP",
+        "description": "Queries PTP for DA Reserve MCP.",
+        "operationId": "get_affb0830-49f5-40b5-b8dc-adaa3a7e8f8f",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/DART-Basis/query": {
+      "description": "DART-Basis",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "DART-Basis",
+        "description": "Queries PTP for DART-Basis.",
+        "operationId": "get_2472312b-6cc9-481a-9398-b44e6f9f356e",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Energy_Detail/query": {
+      "description": "Energy_Detail",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Energy_Detail",
+        "description": "Queries PTP for Energy_Detail.",
+        "operationId": "get_6dbe7552-e59e-4339-ab35-f15ef2339c6e",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Generation-Volumes/query": {
+      "description": "Generation-Volumes",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Generation-Volumes",
+        "description": "Queries PTP for Generation-Volumes.",
+        "operationId": "get_8b85596f-4caa-45ec-ae2a-892eb43ee7b1",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Market_Price/query": {
+      "description": "Market_Price",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Market_Price",
+        "description": "Queries PTP for Market_Price.",
+        "operationId": "get_b3408abe-e7be-465f-8ea3-717077582a1d",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Market_Price_2/query": {
+      "description": "Market_Price_2",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Market_Price_2",
+        "description": "Queries PTP for Market_Price_2.",
+        "operationId": "get_bc109570-4380-491f-a649-98bdba3925a7",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Market_Price_2/commit": {
+      "description": "Market_Price_2",
+      "post": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Market_Price_2",
+        "description": "Submits data to PTP for Market_Price_2.",
+        "operationId": "post_bc109570-4380-491f-a649-98bdba3925a7",
+        "parameters": [
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Allows user to override the PowerTools environment that is supplying the schema and data. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/commit"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/commit"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/MarketRegulationResults/query": {
+      "description": "MarketRegulationResults",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "MarketRegulationResults",
+        "description": "Queries PTP for MarketRegulationResults.",
+        "operationId": "get_dc09dc01-f6e7-4e3c-8db4-3d059d0b316b",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/MarketRegulationResults/commit": {
+      "description": "MarketRegulationResults",
+      "post": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "MarketRegulationResults",
+        "description": "Submits data to PTP for MarketRegulationResults.",
+        "operationId": "post_dc09dc01-f6e7-4e3c-8db4-3d059d0b316b",
+        "parameters": [
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Allows user to override the PowerTools environment that is supplying the schema and data. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/commit"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/commit"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/PI-Data/query": {
+      "description": "PI-Data",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "PI-Data",
+        "description": "Queries PTP for PI-Data.",
+        "operationId": "get_fb5fe1aa-589f-4497-9838-989f4b57d87a",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/QueryGeneratorRegulationAward/query": {
+      "description": "QueryGeneratorRegulationAward",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "QueryGeneratorRegulationAward",
+        "description": "Queries PTP for QueryGeneratorRegulationAward.",
+        "operationId": "get_c3e2916f-fadc-4770-8543-cebca04e4744",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/QueryGeneratorRegulationAward/commit": {
+      "description": "QueryGeneratorRegulationAward",
+      "post": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "QueryGeneratorRegulationAward",
+        "description": "Submits data to PTP for QueryGeneratorRegulationAward.",
+        "operationId": "post_c3e2916f-fadc-4770-8543-cebca04e4744",
+        "parameters": [
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Allows user to override the PowerTools environment that is supplying the schema and data. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/commit"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/commit"
+          }
+        }
+      }
+    },
+    "/ptp/PJM/Settlement_Daily/query": {
+      "description": "Settlement_Daily",
+      "get": {
+        "tags": [
+          "PJM"
+        ],
+        "summary": "Settlement_Daily",
+        "description": "Queries PTP for Settlement_Daily.",
+        "operationId": "get_f802cd7e-eea6-43b0-acee-ce69f8a730c8",
+        "parameters": [
+          {
+            "name": "begin",
+            "in": "query",
+            "description": "The date that represents the start of data. This is inclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-04T05:00:00Z"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "The date that represents the end of data. This is exclusive.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "example": "2026-06-05T06:00:00Z"
+          },
+          {
+            "name": "environment",
+            "in": "query",
+            "description": "Specify which environment will be accessed. Default is production.",
+            "schema": {
+              "enum": [
+                "production",
+                "stage"
+              ],
+              "type": "string"
+            },
+            "example": "stage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/query"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "authentication": {
+        "description": "Successful response of a jwt",
+        "content": {
+          "application/json": {
+            "schema": {
+              "required": [
+                "data"
+              ],
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              },
+              "description": "JWT",
+              "example": "{\"data\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJhODE5MjU0Yy05YWUwLTQ2MjgtOTg0Zi0yMjFhNTVjZjUwZTAiLCJ2ZnIiOiI2Mzg1MTgyMDc5NTAxODAwMDAiLCJ2dG8iOiI2Mzg1MTkwNzE5NTAxODAwMDAiLCJ0aWQiOiJfZGM3ZjFhZDQtZGI5Mi00OWVkLWIyMzgtNzYwZTZhNTBkOWMxIiwibmJmIjoxNzE2MjIzOTk1LCJleHAiOjE3MTYzMTAzOTUsImlhdCI6MTcxNjIyMzk5NX0.9Q7usD-AzreJRyN_EvcapGr0xJCprTor34JhIUiwkvQ\"}"
+            }
+          }
+        }
+      },
+      "market": {
+        "description": "The /ptp/{market} GET response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "ResultWrapper",
+              "required": [
+                "data"
+              ],
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "title": "MarketObject",
+                    "required": [
+                      "identifier",
+                      "name",
+                      "timeZone",
+                      "endpoints"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "ERCOT Nodal"
+                      },
+                      "identifier": {
+                        "type": "integer",
+                        "format": "int8",
+                        "example": 2
+                      },
+                      "timeZone": {
+                        "type": "string",
+                        "example": "Central"
+                      },
+                      "endpoints": {
+                        "type": "array",
+                        "items": {
+                          "title": "ViewportObject",
+                          "required": [
+                            "name",
+                            "identifier"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Market-Prices"
+                            },
+                            "identifier": {
+                              "type": "string",
+                              "format": "uuid",
+                              "example": "32c40f9b-a165-4c7c-8fbc-1879cd10052f"
+                            },
+                            "links": {
+                              "type": "object",
+                              "properties": {
+                                "parent": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "self": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "elements": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "query": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "query-normalized": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "commit": {
+                                  "type": "string",
+                                  "format": "uri"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "The general structure of a /ptp/{market} response."
+            }
+          }
+        }
+      },
+      "endpoint": {
+        "description": "The /ptp/{market}/{endpoint} GET response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "ResultWrapper",
+              "required": [
+                "data"
+              ],
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "title": "EndpointObject",
+                    "required": [
+                      "identifier",
+                      "name",
+                      "element-definitions",
+                      "dataPoints"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Market-Prices"
+                      },
+                      "identifier": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "3077964a-dc6b-4212-b068-726c0eb2a089"
+                      },
+                      "element-definitions": {
+                        "type": "array",
+                        "items": {
+                          "title": "ElementDefinitionObject",
+                          "required": [
+                            "shortName",
+                            "name",
+                            "identifier",
+                            "validParentElementDefinitionIdentifiers"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "shortName": {
+                              "type": "string",
+                              "example": "CONFIG"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Generator Configuration"
+                            },
+                            "identifier": {
+                              "type": "integer",
+                              "format": "int8",
+                              "example": 14
+                            },
+                            "validParentElementDefinitionIdentifiers": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "format": "int8"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "dataPoints": {
+                        "type": "array",
+                        "items": {
+                          "title": "DataPointObject",
+                          "required": [
+                            "name",
+                            "identifier"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Action"
+                            },
+                            "identifier": {
+                              "type": "string",
+                              "format": "uuid",
+                              "example": "6e68cd8d-9199-4e5c-85ed-cecac0fa8e51"
+                            },
+                            "elementDefinitionIdentifier": {
+                              "type": "integer",
+                              "format": "int8",
+                              "example": 14
+                            },
+                            "dataPointType": {
+                              "type": "string",
+                              "description": "Defines whether data is input or calculated.",
+                              "example": "Input"
+                            },
+                            "dataType": {
+                              "type": "string",
+                              "description": "The type of data (i.e.: System.String[]",
+                              "example": "Decimal"
+                            }
+                          }
+                        }
+                      },
+                      "links": {
+                        "type": "object",
+                        "properties": {
+                          "parent": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "self": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "elements": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "data": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "data-normalized": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "The general structure of a /ptp/{market}/{endpoint} response."
+            }
+          }
+        }
+      },
+      "query": {
+        "description": "The general form of any /ptp/{market}/{endpoint}/query GET response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "ResultWrapper",
+              "required": [
+                "data",
+                "validations"
+              ],
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "title": "ElementObject",
+                    "required": [
+                      "identifier",
+                      "dataPoints"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "element": {
+                        "type": "string"
+                      },
+                      "identifier": {
+                        "pattern": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                        "type": "string"
+                      },
+                      "definition": {
+                        "type": "string"
+                      },
+                      "goLiveDate": {
+                        "pattern": "yyyy-MM-dd",
+                        "type": "string"
+                      },
+                      "expirationDate": {
+                        "pattern": "yyyy-MM-dd",
+                        "type": "string"
+                      },
+                      "parentIdentifier": {
+                        "pattern": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                        "type": "string"
+                      },
+                      "dataPoints": {
+                        "type": "array",
+                        "items": {
+                          "title": "DataPointObject",
+                          "required": [
+                            "keyName",
+                            "values"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "keyName": {
+                              "type": "string"
+                            },
+                            "values": {
+                              "type": "array",
+                              "items": {
+                                "title": "IntervalRangeObject",
+                                "required": [
+                                  "intervalStartUtc",
+                                  "intervalEndUtc",
+                                  "data"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                  "intervalStartUtc": {
+                                    "pattern": "yyyy-MM-ddTHH:mm:ssZ",
+                                    "type": "string"
+                                  },
+                                  "intervalEndUtc": {
+                                    "pattern": "yyyy-MM-ddTHH:mm:ssZ",
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "array",
+                                    "items": {
+                                      "title": "ValueObject",
+                                      "required": [
+                                        "value"
+                                      ],
+                                      "type": "object",
+                                      "properties": {
+                                        "value": {
+                                          "type": "string"
+                                        },
+                                        "sequence": {
+                                          "type": "string"
+                                        },
+                                        "coords": {
+                                          "title": "DimensionalCoordsObject",
+                                          "type": "object",
+                                          "properties": {
+                                            "dimensionName": {
+                                              "type": "object"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "The general structure of a /ptp/{market}/{endpoint}/query response."
+            }
+          }
+        }
+      },
+      "commit": {
+        "description": "The general form of any /ptp/{market}/{endpoint}/submit POST response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "ResultWrapper",
+              "required": [
+                "validations"
+              ],
+              "type": "object",
+              "description": "The general structure of a /ptp/{market}/{endpoint}/commit response."
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "commit": {
+        "description": "The required body for /ptp/{market}/{endpoint}/commit requests.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "ResultWrapper",
+              "required": [
+                "data",
+                "validations"
+              ],
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "title": "ElementObject",
+                    "required": [
+                      "identifier",
+                      "dataPoints"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "element": {
+                        "type": "string"
+                      },
+                      "identifier": {
+                        "pattern": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                        "type": "string"
+                      },
+                      "definition": {
+                        "type": "string"
+                      },
+                      "goLiveDate": {
+                        "pattern": "yyyy-MM-dd",
+                        "type": "string"
+                      },
+                      "expirationDate": {
+                        "pattern": "yyyy-MM-dd",
+                        "type": "string"
+                      },
+                      "parentIdentifier": {
+                        "pattern": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                        "type": "string"
+                      },
+                      "dataPoints": {
+                        "type": "array",
+                        "items": {
+                          "title": "DataPointObject",
+                          "required": [
+                            "keyName",
+                            "values"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "keyName": {
+                              "type": "string"
+                            },
+                            "values": {
+                              "type": "array",
+                              "items": {
+                                "title": "IntervalRangeObject",
+                                "required": [
+                                  "intervalStartUtc",
+                                  "intervalEndUtc",
+                                  "data"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                  "intervalStartUtc": {
+                                    "pattern": "yyyy-MM-ddTHH:mm:ssZ",
+                                    "type": "string"
+                                  },
+                                  "intervalEndUtc": {
+                                    "pattern": "yyyy-MM-ddTHH:mm:ssZ",
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "array",
+                                    "items": {
+                                      "title": "ValueObject",
+                                      "required": [
+                                        "value"
+                                      ],
+                                      "type": "object",
+                                      "properties": {
+                                        "value": {
+                                          "type": "string"
+                                        },
+                                        "sequence": {
+                                          "type": "string"
+                                        },
+                                        "coords": {
+                                          "title": "DimensionalCoordsObject",
+                                          "type": "object",
+                                          "properties": {
+                                            "dimensionName": {
+                                              "type": "object"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "The required body for /ptp/{market}/{endpoint}/commit requests."
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basic": {
+        "type": "http",
+        "description": "Basic HTTP Authentication",
+        "scheme": "basic"
+      },
+      "bearer": {
+        "type": "http",
+        "description": "Bearer HTTP Authentication. Token is retrieved using basic auth against the /v1/token endpoint.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "basic": []
+    },
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Defines specifications related to authentication with the PowerTools API."
+    },
+    {
+      "name": "Resource",
+      "description": "Groups endpoints related to viewing high level information about what is accessible at the api."
+    },
+    {
+      "name": "Operations",
+      "description": ""
+    },
+    {
+      "name": "PJM",
+      "description": ""
+    }
+  ]
+}
