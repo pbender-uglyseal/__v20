@@ -1,0 +1,44 @@
+col_0,Response Success MB_Error a,Response Success,col_3
+—,kVA 0.0 lpparent Powe kVA 139.5,,
+—,VAC 1.9 Line Volts Vbc VAC 627.6,,
+,Fault Group 1 & 2,Fault Group 1 & 2,
+,Safe Sto Current Imbain,Safe Sto Current Imbalr,hase C [kV
+Feedback[Arm,HW Over Cur AC Volt Imba’ VAC 6.0RMS Volts Ve VAC 359.4,HW Over Cur AC Volt Imba’ Feedback[Arm,
+,E-Stop AC OV,E-Stop AC OV,U.U
+Feedback[Arm,VAC 7.0RMS Volts VE VAC 360.9,Feedback[Arm,
+,Driver PS Fat AC UV,Driver PS Fa AC UV,
+%,Inst OV A 7.3kMs Volts Vc VAC 363.2,Inst OV A,% 86.4
+10.7| Fan Speed 1,,Fan Speed 1,
+,AC OCB Inst OV B,AC OCB Inst OV B,
+,AC OC C; Inst OV C,AC OC C; Inst OV C Fan 2,86.2
+% 12.9 Fan Speed 2,,Speed,©
+,DC OV Over Feq ikms Ir,DC OV Over Feq,
+,DC UV Under Fre,DC UV Under Fre,
+PLC WID T/C,,PLC WID T/C,
+,DC Pos O Comm AAC ikms Amps Ic AAC 129,DC Pos 9 3 3 2,
+,DC Pos U DC Voit D,DC Pos DC Voit D ‘hase Rotatio,"1| : CCW, 2:C\"
+‘hase Rotatio,Hz 0.00 Frequency Hz 60.01,,
+,DC Neg ¢ Reserved,DC Neg ¢ Reserved,
+,DC Neg Reserved inte 1125.90 Input DC Volt: 1141.31,DC Neg U\ Reserved,
+Vpk 0.0 direct Axis Vo,,direct Axis Vo,Vpk 510.7
+,DC Imbalan Reserved,DC Imbalan Reserved,
+,Heatsink O ADC Erro,Heatsink O ADC Erro uad. Axis Vc,Vpk -0.0
+,Un-int. Island Param. Mismat {DC 568.93)C Volts Neg C 561.16,Un-int. Island Param. Mismat,
+,Fault Group 3 & 4,Fault Group 3 & 4 2con. Elapsed Tin,U
+2con. Elapsed,C 41.0 ax IGBT Tem C 81.8,,
+,Master Fau Current Imbalz,Master Fau Current,
+,Over Lox a a < 2 a 2 3 IGBT Tem C 79.8,Over Lox Slave Not Presi,
+,Ambient OT Fan Speed,Ambient OT Fan Speed Fat,
+,reserved Reserved IGBT Tem; C 81.8,reserved Reserved,
+,reserved Reserved 1 IGBT Tem; C 75.5,reserved Reserved,
+,reserved Master Not Pre:,reserved Master Not Pre:,
+,reserved reserved Cc 39.9h2 IGBT Tem} C 79.9),reserved reserved,
+,reserved reserved,reserved reserved,
+,Watchdog reserved,Watchdog w/F reserved,
+,Watchdog w/C reserved C 40.002 IGBT Tem; C 70.5,Watchdog w/C reserved,
+,Reserved reserved,Reserve: reserved,
+,Reserved reserved,Reservec reserved,
+,Reserved reserved nternal Temp C 38.2,Reserve reserved,
+,Reserved reserved,Reserved reserved,
+,Reserved reserved,Reserved reserved,LS Energy Solutions
+,Reserved reserved C -67.4 Choke Temp C -67.7,Reserved reserved,

@@ -1,0 +1,54 @@
+col_0,| a Response Success| MB_Error,col_2,BRiC #1,col_4,BRiC #2,col_6,BRiC #3,col_8,BRiC #4,col_10,BRiC #5,col_12,BRiC #6,col_14,BRiC #7
+,| GridTie Synchronizing} Status,,Running,,Running,,Running,,Running,,Running,,Synchronizing},,Running
+,AllMaster| 0| Heartbeat In,,1,,0,,3,,0,,2,,0,,3
+,Pa,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,kW 0.0| Active Power,,kW -0.3,,kW 0.7,,kW -0.1,,kW -0.1,,kW 0.1,,kW 0.0,,kW 0.3
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,kKVAR 0.0] Reactive Power,,kKVAR -0.3,,kKVAR -0.5,,kKVAR 0.1,,kKVAR -0.6,,kKVAR -0.4,,0.0),,kKVAR 0.3
+,kVA 0.0} Apparent Power,,0.4,,kVA 0.9,,kVA 0.2,,kVA 0.6,,kVA 0.5,,kVA 0.0,,kVA 0.4
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,VAC 3.0] Line Volts Vab,,VAC 612.6,,VAC 615.5,,VAC 614.9,,VAC 617.4,,VAC 614.4,,VAC 3.0,,VAC 614.4
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,VAC 2.5] Line Volts Vbc,,VAC 614.7,,VAC 616.1,,VAC 614.5,,VAC 615.7,,VAC 614.5,,VAC 2.5,,VAC 613.5
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,— VAC 4.4| Line Volts Vca,,VAC 613.8,,VAC 615.4,,VAC 613.6,,VAC 617.2,,VAC 613.5,,VAC 4.4,,VAC 615.4
+0.0|,Id Feedback[Arms] |= be [wapee,f,,f,,f,,f,,f,,f,,f,
+,HW Over Current AC Volt Imbal VAC 6.5| RMS Volts Va,,VAC 353.7,,VAC 355.4,,VAC 355.0,,VAC 357.4,,VAC 354.3,,VAC 6.5,,VAC 356.0
+,E-Stop AC OV,f,,f,,f,,,,,,,,,
+0.0),IqFeedbackfArms] VAC 7.2| RMS Volts Vb,,VAC 354.5,,VAC 355.4,,VAC 355.1,,VAC 355.4,,VAC 355.4,,VAC 7.2,,VAC 354.5
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+% 12.8,Fan Speed 1 Been Been VAC 8.3] RMS Volts Vc,,VAC 354.8,,VAC 356.0,,VAC 354.0,,VAC 355.9,,VAC 354.6,,VAC 8.3,,VAC 354.1
+,AC OC Bph Inst OV Bph,\,,\,,\,,\,,\,,\,,\,
+,acoccph OV Cph AAC 1] la,,AAC 7,,AAC 7,,AAC 6,,AAC 7,,AAC 7,,AAC 1,,AAC 6
+» 13.5 —,Fan Speed 2 _,\,,\,,\,,\,,,,,,,
+,bc ov AAC RMS Amps Ib,,AAC 6,,AAC 6,,AAC 6,,AAC 7,,AAC 7,,AAC 1,,AAC 6
+>),PLC WID T/O a =,,,,,,,,,,,,,,
+,DC Pos OV Comm Fail(Internal) AAC 1} RMS Amps Ic,,AAC 6,,AAC 7,,AAC 6,,AAC 6,,AAC 7,,AAC 1,,AAC 6
+,|,4,,4,,4,,4,,4,,+,,+,
+0,Phase Rotation ~ — Hz 0.00} Frequency,,Hz 60.00),,Hz 60.01,,Hz 60.00),,Hz 59.99,,Hz 60.01,,Hz 0.00),,Hz 60.03
+,= =,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,DC Neg UV Reserved VDC 1152.87] Input DC Volts,,VDC 1156.72,,VDC 1161.54,,VDC 1152.87,,VDC 1155.76,,VDC 1153.83,,VDC 1152.87,,VDC 1152.87
+Vpk 0.0,"Is om, DC Imbalance Reserved",4,,4,,4,,4,,,,,,,
+,VDC 579.61} DC Volts Pos,,VDC 578.15,,VDC 583.98,,VDC 583.01,,VDC 583.49,,VDC 580.09,,VDC 579.61,,VDC 579.12
+Vpk 0.0,== d. Axi so Volt,r,+,r,+,r,+,r,+,,+,r,+,r,+
+,Islanding Param. Mismatch VDC 579.12] DC Volts Neg,,VDC 577.18,,VDC 571.84,,VDC 574.27,,VDC 576.70,,VDC 580.09,,VDC 579.12,,VDC 573.30
+,‘ault Group 3 & 4,,,,,,,r,,r,,r,,r,
+,Recon. Elapsed Time |r C 41.3] Max IGBT Temp,,C 60.0,,C 59.0,,C 56.6,,C 59.7,,C 52.5,,C 41.3,,C 54.1
+,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,Over Load Stave Not Present C A1IGBT Temp,,C 56.5,,C 56.4,,C 54.6,,C 55.3,,C 49.6,,C 41.3,,Cc 49.9
+,Ambient OT Fan Speed Fault,,,,,,,,,,,>,,>,
+,Reserved C 40.4) Temp,,C 58.7,,C 59.1,,C 56.7,,C 58.7,,C 52.4,,C 40.4,,C 54.1
+,—,,+,,+,,+,,+,,+,,+,,+
+,Bere @ C B1IGBT Temp,,C 55.2,,C 52.7,,C 53.5,,,,C 47.3,,C 39.0,,C 50.3
+,reserved Master Not Present |,4,,4,,4,,4,,4,,4,,>,
+,reserved reserved C Temp,,C 60.0,,C 55.3,,Cc 55.9,,C 59.7,,C 51.6,,C 40.5,,C 50.4
+,C 41.2} C1IGBT Temp,,C 54.4,,C 47.9,,C51.9,,C 52.7,,C 47.7,,C 41.2,,C51.9
+,a fatchdog wi a,\,,\,,\,,\,,\,,\,,\,
+,Watchdog reserved C 40.3} Temp,,C 57.3,,C 50.7,,C 54.2,,C 56.0,,C 52.5,,C 40.3,,C 53.5
+,Reserved | reserved,,,,,,,f,,f,,f,,f,
+,VDC 1.649] 1.65V Supply,,VDC 1.651,,VDC 1.652,,VDC 1.648,,VDC 1.650,,VDC 1.649,,VDC 1.649,,VDC 1.648
+,Reserved reserved C Internal Temp,,C 47.8,,C 38.4,,C 38.7,,C 44.3,,C 38.5,,C 40.6,,C 40.9
+,Reserved reserved,lg,,,",",,,£,,,,£,,,
+CPU,C -67.1} External Temp,,C -67.3,,C -67.9,,C -67.3,,C -67.7,,C -67.5,,C -67.1,,C -67.9
+,_,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,,Pa,
+,"\_, Reserved \_, C -67.7| Choke Temp",,C -67.2,,C -66.9,,C -67.5,,C -67.6,,C -66.2,,C -67.7,,C -67.1
